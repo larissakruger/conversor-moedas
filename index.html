@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Conversor de moedas em tempo real com histórico de cotações. Suporta USD, EUR, BRL, GBP e mais moedas.">
+    <meta name="keywords" content="conversor de moedas, cotação, dólar, euro, real, bitcoin, câmbio">
+    <meta name="author" content="CurrencyDash">
+    
+    <meta property="og:title" content="CurrencyDash - Conversor de Moedas">
+    <meta property="og:description" content="Cotações em tempo real e histórico do mercado">
+    <meta property="og:type" content="website">
+    
+    <title>CurrencyDash - Conversor de Moedas em Tempo Real</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header role="banner">
+            <div class="header-content">
+                <div class="header-text">
+                    <h1>Currency<span>Dash</span></h1>
+                    <p data-i18n="subtitle">Cotações em tempo real e histórico do mercado</p>
+                </div>
+                <div class="language-selector" role="navigation" aria-label="Seletor de idioma">
+                    <span class="language-icon" aria-hidden="true">🌐</span>
+                    <select id="languageSelect" aria-label="Escolher idioma">
+                        <option value="pt">🇧🇷 PT</option>
+                        <option value="en">🇺🇸 EN</option>
+                        <option value="es">🇪🇸 ES</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main role="main">
+            <div class="main-content">
+                <section class="card converter" role="region" aria-label="Conversor de moedas">
+                    <h2 data-i18n="converter-title">Conversor Dinâmico</h2>
+                    <form id="converterForm">
+                        <fieldset>
+                            <legend class="visually-hidden" data-i18n="converter-title">Conversor de Moedas</legend>
+                            <div class="converter-controls">
+                                <div class="input-field input-amount">
+                                    <label for="amount" data-i18n="value-label">Valor</label>
+                                    <input type="number" id="amount" value="1" min="0.01" step="0.01" required aria-required="true" aria-describedby="amount-error">
+                                </div>
+                                <div class="currency-selects">
+                                    <div class="input-field">
+                                        <label for="fromCurrency" data-i18n="from-label">De</label>
+                                        <select id="fromCurrency">
+                                            <option value="USD" data-i18n="currency-usd">Dólar EUA (USD)</option>
+                                            <option value="BRL" selected data-i18n="currency-brl">Real (BRL)</option>
+                                            <option value="EUR" data-i18n="currency-eur">Euro (EUR)</option>
+                                            <option value="GBP" data-i18n="currency-gbp">Libra (GBP)</option>
+                                            <option value="CAD" data-i18n="currency-cad">Dólar Canadense (CAD)</option>
+                                            <option value="ARS" data-i18n="currency-ars">Peso Argentino (ARS)</option>
+                                            <option value="JPY" data-i18n="currency-jpy">Iene (JPY)</option>
+                                            <option value="CNY" data-i18n="currency-cny">Yuan (CNY)</option>
+                                            <option value="XAU" data-i18n="currency-xau">Ouro (XAU)</option>
+                                            <option value="BTC" data-i18n="currency-btc">Bitcoin (BTC)</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-field">
+                                        <label for="toCurrency" data-i18n="to-label">Para</label>
+                                        <select id="toCurrency">
+                                            <option value="USD" selected data-i18n="currency-usd">Dólar EUA (USD)</option>
+                                            <option value="BRL" data-i18n="currency-brl">Real (BRL)</option>
+                                            <option value="EUR" data-i18n="currency-eur">Euro (EUR)</option>
+                                            <option value="GBP" data-i18n="currency-gbp">Libra (GBP)</option>
+                                            <option value="CAD" data-i18n="currency-cad">Dólar Canadense (CAD)</option>
+                                            <option value="ARS" data-i18n="currency-ars">Peso Argentino (ARS)</option>
+                                            <option value="JPY" data-i18n="currency-jpy">Iene (JPY)</option>
+                                            <option value="CNY" data-i18n="currency-cny">Yuan (CNY)</option>
+                                            <option value="XAU" data-i18n="currency-xau">Ouro (XAU)</option>
+                                            <option value="BTC" data-i18n="currency-btc">Bitcoin (BTC)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                    
+                    <div class="actions">
+                        <button type="button" id="convertBtn" class="btn-primary" data-i18n="convert-btn">Converter</button>
+                    </div>
+
+                    <div class="result-display">
+                        <span id="resultValue">--</span>
+                    </div>
+                    <div class="last-update">
+                        <span id="lastUpdate"></span>
+                    </div>
+                    
+                    <div class="last-conversion" id="lastConversion" style="display: none;">
+                        <p class="last-conversion-label" data-i18n="last-conversion-label">Última conversão:</p>
+                        <div class="last-conversion-item" id="lastConversionItem"></div>
+                    </div>
+                        </fieldset>
+                    </form>
+                </section>
+
+                <section class="card chart-section" role="region" aria-label="Gráfico histórico">
+                    <h2 data-i18n="history-title">Tendência de Mercado</h2>
+                    <div class="period-selector" role="tablist" aria-label="Seletor de período">
+                        <button class="period-btn active" data-period="7" data-i18n="7days-btn" role="tab" aria-selected="true" aria-controls="currencyChart">7 Dias</button>
+                        <button class="period-btn" data-period="30" data-i18n="1month-btn" role="tab" aria-selected="false" aria-controls="currencyChart">1 Mês</button>
+                        <button class="period-btn" data-period="365" data-i18n="1year-btn" role="tab" aria-selected="false" aria-controls="currencyChart">1 Ano</button>
+                    </div>
+                    <div class="chart-wrapper" role="img" aria-label="Gráfico de cotação">
+                        <canvas id="currencyChart"></canvas>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+        
+        <footer role="contentinfo">
+            <p><span data-i18n="footer-developed">Desenvolvido por</span> <strong>Larissa Kruger</strong></p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
