@@ -20,10 +20,10 @@ Conversor de moedas em tempo real com interface moderna, gráfico histórico e s
 
 ```
 conversor-moedas/
-├── index.html          # Estrutura HTML
+├── index.html          # Estrutura
 ├── style.css           # Estilos e responsividade
 ├── script.js           # Lógica e integração com API
-└── README.md           # Documentação
+└── README.md           # Esse arquivo :p
 ```
 
 ## 🛠️ Tecnologias Utilizadas
